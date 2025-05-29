@@ -39,12 +39,12 @@ Simulação de 3 cenários críticos confirmou:
 - Alertas 100% compatíveis com normas NR-15
 - LED acionado como substituto simbólico de atuadores físicos
 
-## 🚧 Limitações
+##  Limitações
 - Simulação sem atuadores físicos reais (ventiladores, alarmes)
 - Necessidade de calibração periódica dos sensores
 - Interferência pontual em rede LoRaWAN simulada
 
-## 🌱 Futuro
+##  Futuro
 - Monitoramento de novos parâmetros (ruído, iluminação)
 - Aplicativo móvel para alertas
 - Machine Learning para predição de risco
