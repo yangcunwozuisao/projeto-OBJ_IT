@@ -24,8 +24,8 @@ A lógica de decisão, ingestão de dados, comparações com limites legais e en
 ##  Códigos
 
 ###  esp32/
-- `projeto disp1`: Código do dispositivo 1 simulando dados de sensores e enviando via MQTT.
-- `projeto disp2`: Código do dispositivo 2 simulando dados de atuadores e enviando via MQTT.
+- `projeto disp1.ino`: Código do dispositivo 1 simulando dados de sensores e enviando via MQTT.
+- `projeto disp2.ino`: Código do dispositivo 2 simulando dados de atuadores e enviando via MQTT.
 
 ###  node-red/
 - `fluxo_node_red.json`: Fluxo completo da plataforma low code com regras e alertas.
