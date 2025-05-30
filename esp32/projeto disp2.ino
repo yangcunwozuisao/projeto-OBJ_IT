@@ -1,14 +1,14 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-// --- Configurações Wi-Fi ---
+// --- Configurações Wi-Fi ---G
 const char* SSIDName = "Wokwi-GUEST";
 const char* SSIDPass = "";
 
 // --- Configurações MQTT ---
 const char* BrokerURL = "broker.hivemq.com";
 const int BrokerPort = 1883;
-const char* MQTTClientName = "ATV_4";
+const char* MQTTClientName = "disp_2";
 
 // --- Tópicos MQTT ---
 const char* Topico_Temp = "pub_sub/Temperatura";
