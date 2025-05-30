@@ -28,7 +28,7 @@ A lógica de decisão, ingestão de dados, comparações com limites legais e en
 - `projeto disp2.ino`: Código do dispositivo 2 simulando dados de atuadores e enviando via MQTT.
 
 ###  node-red/
-- `fluxo_node_red.json`: Fluxo completo da plataforma low code com regras e alertas.
+- `flow.json`: Fluxo completo da plataforma low code com regras e alertas.
 
 ##  Dashboards
 Capturas de tela do Grafana estão na pasta `/imagens`.
