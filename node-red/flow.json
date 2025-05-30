@@ -1,0 +1,746 @@
+[
+    {
+        "id": "2f6c746a9c123a95",
+        "type": "tab",
+        "label": "流程 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e879125d2c3cca2a",
+        "type": "mqtt in",
+        "z": "2f6c746a9c123a95",
+        "name": "pub_sub/Temperatura",
+        "topic": "pub_sub/Temperatura",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "afc290bfd8a9ae0b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 260,
+        "wires": [
+            [
+                "aaf00e0c9e96788d",
+                "02266b355e462673"
+            ]
+        ]
+    },
+    {
+        "id": "5df18e7455fc48a7",
+        "type": "function",
+        "z": "2f6c746a9c123a95",
+        "name": "function 1",
+        "func": "var temperatura = parseFloat(msg.payload);\n\nif (isNaN(temperatura)) {\n    msg.payload = \"Erro: valor inválido!\";\n} else if (temperatura > 35) {\n    msg.payload = \"Alerta: Temperatura acima de 35°C! (\" + temperatura + \"°C)\";\n} else {\n    msg.payload = \"Temperatura normal: \" + temperatura + \"°C\";\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 220,
+        "wires": [
+            [
+                "1d00bc3be551a9b4"
+            ]
+        ]
+    },
+    {
+        "id": "3c23105be5b27b20",
+        "type": "mqtt in",
+        "z": "2f6c746a9c123a95",
+        "name": "pub_sub/Umidade",
+        "topic": "pub_sub/Umidade",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "afc290bfd8a9ae0b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 520,
+        "wires": [
+            [
+                "47d9d97d6cd1758c",
+                "cc506de2ba2d8f9f"
+            ]
+        ]
+    },
+    {
+        "id": "c0d8ff2c9e6025c8",
+        "type": "mqtt in",
+        "z": "2f6c746a9c123a95",
+        "name": "pub_sub/QualidadeAr",
+        "topic": "pub_sub/QualidadeAr",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "afc290bfd8a9ae0b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 780,
+        "wires": [
+            [
+                "d1644931f64aa455",
+                "ba41c3fe80c95014"
+            ]
+        ]
+    },
+    {
+        "id": "949c16bcd025b150",
+        "type": "function",
+        "z": "2f6c746a9c123a95",
+        "name": "function 2",
+        "func": "var umidade = parseFloat(msg.payload);\n\nif (umidade < 30) {\n    msg.payload = \"⚠️ Alerta: Umidade muito baixa (\" + umidade + \"%)\";\n} else if (umidade > 80) {\n    msg.payload = \"⚠️ Alerta: Umidade muito alta (\" + umidade + \"%)\";\n} else {\n    msg.payload = \" Umidade normal: \" + umidade + \"%\";\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 480,
+        "wires": [
+            [
+                "ce90f8755d350669"
+            ]
+        ]
+    },
+    {
+        "id": "6db9a4762c0c4a7d",
+        "type": "function",
+        "z": "2f6c746a9c123a95",
+        "name": "function 3",
+        "func": "var qualidade = parseInt(msg.payload);\n\nif (qualidade > 1000) {\n    msg.payload = \"⚠️ Alerta: Qualidade do ar ruim! Valor: \" + qualidade;\n} else {\n    msg.payload = \" Qualidade do ar aceitável. Valor: \" + qualidade;\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 740,
+        "wires": [
+            [
+                "3848a21df8cd7b18"
+            ]
+        ]
+    },
+    {
+        "id": "04ed9fe001dc02c4",
+        "type": "inject",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "exemplo",
+        "payloadType": "str",
+        "x": 180,
+        "y": 180,
+        "wires": [
+            [
+                "get_weather"
+            ]
+        ]
+    },
+    {
+        "id": "aaf00e0c9e96788d",
+        "type": "change",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 260,
+        "wires": [
+            [
+                "31c5ec86abaf1107"
+            ]
+        ]
+    },
+    {
+        "id": "c2bdc8ea71878c78",
+        "type": "change",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 180,
+        "wires": [
+            [
+                "31c5ec86abaf1107"
+            ]
+        ]
+    },
+    {
+        "id": "31c5ec86abaf1107",
+        "type": "join",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 750,
+        "y": 220,
+        "wires": [
+            [
+                "5df18e7455fc48a7"
+            ]
+        ]
+    },
+    {
+        "id": "1d00bc3be551a9b4",
+        "type": "node-red-contrib-whatsapp-cmb-send-message",
+        "z": "2f6c746a9c123a95",
+        "name": "WhatsApp API Account",
+        "credtype": "account",
+        "account": "249cf2f42a1e2b14",
+        "text": "payload",
+        "phonenumbervalue": "",
+        "apikeyvalue": "",
+        "apikeyinputtypemessage": "msg",
+        "phonenumberinputtypemessage": "msg",
+        "inputtypemessage": "msg",
+        "rejectssl": false,
+        "x": 1110,
+        "y": 220,
+        "wires": [
+            [
+                "e15451cdc62c33c9"
+            ]
+        ]
+    },
+    {
+        "id": "e15451cdc62c33c9",
+        "type": "debug",
+        "z": "2f6c746a9c123a95",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "2e03a6b25337f838",
+        "type": "change",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "251a977d6ebc839b"
+            ]
+        ]
+    },
+    {
+        "id": "47d9d97d6cd1758c",
+        "type": "change",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 520,
+        "wires": [
+            [
+                "251a977d6ebc839b"
+            ]
+        ]
+    },
+    {
+        "id": "251a977d6ebc839b",
+        "type": "join",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 750,
+        "y": 480,
+        "wires": [
+            [
+                "949c16bcd025b150"
+            ]
+        ]
+    },
+    {
+        "id": "ce90f8755d350669",
+        "type": "node-red-contrib-whatsapp-cmb-send-message",
+        "z": "2f6c746a9c123a95",
+        "name": "WhatsApp API Account",
+        "credtype": "account",
+        "account": "249cf2f42a1e2b14",
+        "text": "payload",
+        "phonenumbervalue": "",
+        "apikeyvalue": "",
+        "apikeyinputtypemessage": "msg",
+        "phonenumberinputtypemessage": "msg",
+        "inputtypemessage": "msg",
+        "rejectssl": false,
+        "x": 1110,
+        "y": 480,
+        "wires": [
+            [
+                "739b21fcf51c7865"
+            ]
+        ]
+    },
+    {
+        "id": "739b21fcf51c7865",
+        "type": "debug",
+        "z": "2f6c746a9c123a95",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "f0b5b0af46f13734",
+        "type": "change",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 700,
+        "wires": [
+            [
+                "04f6e24ed2c8f60d"
+            ]
+        ]
+    },
+    {
+        "id": "d1644931f64aa455",
+        "type": "change",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 780,
+        "wires": [
+            [
+                "04f6e24ed2c8f60d"
+            ]
+        ]
+    },
+    {
+        "id": "04f6e24ed2c8f60d",
+        "type": "join",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 750,
+        "y": 740,
+        "wires": [
+            [
+                "6db9a4762c0c4a7d"
+            ]
+        ]
+    },
+    {
+        "id": "3848a21df8cd7b18",
+        "type": "node-red-contrib-whatsapp-cmb-send-message",
+        "z": "2f6c746a9c123a95",
+        "name": "WhatsApp API Account",
+        "credtype": "account",
+        "account": "249cf2f42a1e2b14",
+        "text": "payload",
+        "phonenumbervalue": "",
+        "apikeyvalue": "",
+        "apikeyinputtypemessage": "msg",
+        "phonenumberinputtypemessage": "msg",
+        "inputtypemessage": "msg",
+        "rejectssl": false,
+        "x": 1110,
+        "y": 740,
+        "wires": [
+            [
+                "65ae4f999634b229"
+            ]
+        ]
+    },
+    {
+        "id": "65ae4f999634b229",
+        "type": "debug",
+        "z": "2f6c746a9c123a95",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "02266b355e462673",
+        "type": "influxdb out",
+        "z": "2f6c746a9c123a95",
+        "influxdb": "cb07ccdddf7f8ddb",
+        "name": "",
+        "measurement": "pub_sub/Temperatura",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "79419181f25ba221",
+        "bucket": "Projeto",
+        "x": 660,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "cc506de2ba2d8f9f",
+        "type": "influxdb out",
+        "z": "2f6c746a9c123a95",
+        "influxdb": "cb07ccdddf7f8ddb",
+        "name": "",
+        "measurement": "pub_sub/Umidade",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "79419181f25ba221",
+        "bucket": "Projeto",
+        "x": 640,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "ba41c3fe80c95014",
+        "type": "influxdb out",
+        "z": "2f6c746a9c123a95",
+        "influxdb": "cb07ccdddf7f8ddb",
+        "name": "",
+        "measurement": "pub_sub/QualidadeAr",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "79419181f25ba221",
+        "bucket": "Projeto",
+        "x": 660,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "5ee84139d5850415",
+        "type": "inject",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "exemplo",
+        "payloadType": "str",
+        "x": 180,
+        "y": 700,
+        "wires": [
+            [
+                "bb3cf3b0f6f91cb3"
+            ]
+        ]
+    },
+    {
+        "id": "1db547b7f6667e38",
+        "type": "inject",
+        "z": "2f6c746a9c123a95",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "exemplo",
+        "payloadType": "str",
+        "x": 180,
+        "y": 440,
+        "wires": [
+            [
+                "c90a8b880f8ae068"
+            ]
+        ]
+    },
+    {
+        "id": "get_weather",
+        "type": "http request",
+        "z": "2f6c746a9c123a95",
+        "name": "API OpenWeatherMap",
+        "method": "GET",
+        "ret": "obj",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=São Paulo&appid=493001762d773ad11ff66d42c86d11c1&units=metric&lang=pt_br",
+        "tls": "",
+        "persist": false,
+        "x": 360,
+        "y": 180,
+        "wires": [
+            [
+                "c2bdc8ea71878c78"
+            ]
+        ]
+    },
+    {
+        "id": "c90a8b880f8ae068",
+        "type": "http request",
+        "z": "2f6c746a9c123a95",
+        "name": "API OpenWeatherMap",
+        "method": "GET",
+        "ret": "obj",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=São Paulo&appid=493001762d773ad11ff66d42c86d11c1&units=metric&lang=pt_br",
+        "tls": "",
+        "persist": false,
+        "x": 360,
+        "y": 440,
+        "wires": [
+            [
+                "2e03a6b25337f838"
+            ]
+        ]
+    },
+    {
+        "id": "bb3cf3b0f6f91cb3",
+        "type": "http request",
+        "z": "2f6c746a9c123a95",
+        "name": "API OpenWeatherMap",
+        "method": "GET",
+        "ret": "obj",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=São Paulo&appid=493001762d773ad11ff66d42c86d11c1&units=metric&lang=pt_br",
+        "tls": "",
+        "persist": false,
+        "x": 360,
+        "y": 700,
+        "wires": [
+            [
+                "f0b5b0af46f13734"
+            ]
+        ]
+    },
+    {
+        "id": "afc290bfd8a9ae0b",
+        "type": "mqtt-broker",
+        "name": "mqtt",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "249cf2f42a1e2b14",
+        "type": "node-red-contrib-whatsapp-cmb-account",
+        "name": "WhatsApp API Account"
+    },
+    {
+        "id": "cb07ccdddf7f8ddb",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "InfluxDB Account",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    }
+]
